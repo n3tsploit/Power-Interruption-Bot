@@ -1,5 +1,5 @@
-import pprint
 import re
+import shelve
 
 regions = {}
 region_regex = re.compile(r"region", re.IGNORECASE)
@@ -33,5 +33,7 @@ with open('new.txt', 'r') as r:
         if regions[region_name][county_name][area_name]['when'] == '':
             regions[region_name][county_name][area_name]['when'] = ''.join(when).lower()
         regions[region_name][county_name][area_name]['where'] += line.strip().lower()
-with open('region.txt', 'w') as w:
-    w.write(pprint.pformat(regions))
+
+shelve_file = shelve.open('data_file')
+shelve_file['regions'] = regions
+shelve_file.close()
