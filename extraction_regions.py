@@ -33,7 +33,6 @@ with open('new.txt', 'r') as r:
         if regions[region_name][county_name][area_name]['when'] == '':
             regions[region_name][county_name][area_name]['when'] = ''.join(when).lower()
         regions[region_name][county_name][area_name]['where'] += line.strip().lower()
-
 shelve_file = shelve.open('data_file')
 shelve_file['regions'] = regions
 shelve_file.close()
