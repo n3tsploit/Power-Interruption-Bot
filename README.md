@@ -1,1 +1,1 @@
-# KPLC-PowerOutage-Bot
+# PowerOutage-Bot
