@@ -3,7 +3,8 @@ import shelve
 shelve_file = shelve.open('data_file')
 regions = shelve_file['regions']
 
-county_input = input("welcome, Check whether power outage is in your area:\n Enter your county name to see planned outages.").upper()
+county_input = input("welcome, Check whether power outage is in your area:\n Enter your county name to see planned "
+                     "outages.").upper()
 
 for region in regions.keys():
     if county_input in regions[region].keys():
