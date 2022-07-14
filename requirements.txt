@@ -24,7 +24,6 @@ olefile==0.46
 pandas==1.4.3
 pdfminer==20191125
 pdfminer.six==20191110
-pdftotext==2.2.2
 Pillow==9.2.0
 pycryptodome==3.15.0
 PyMuPDF==1.20.1
