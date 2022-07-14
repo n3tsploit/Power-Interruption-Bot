@@ -23,7 +23,7 @@ def respond():
 
     if text == '/start':
         welcome_message = 'Welcome How may I help you'
-        bot.sendMessage(chat_id=chat_id, text=welcome_message, reply_to_message=message_id)
+        bot.sendMessage(chat_id=chat_id, text=welcome_message, reply_to_message_id=message_id)
 
     else:
         print('bye')
