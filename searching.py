@@ -9,6 +9,8 @@ county_input = input("welcome, Check whether power outage is in your area:\n Ent
 for region in regions.keys():
     if county_input in regions[region].keys():
         print('The following areas will experience Power outages')
+        pop = [area for area in regions[region][county_input].keys()]
+        print (pop)
         for area in regions[region][county_input].keys():
             print(area, end=' |*|')
         area_input = input('Enter the area from the above to see the exact place that will be affected').lower()
