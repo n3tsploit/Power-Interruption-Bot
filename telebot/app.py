@@ -16,53 +16,53 @@ global county_value
 
 def start_command(update, context):
     update.message.reply_text('Welcome')
-    inline_keyboard = [[InlineKeyboardButton(text="Mombasa", callback_data="Mombasa "),
-                        InlineKeyboardButton(text="Kwale", callback_data="Kwale "),
-                        InlineKeyboardButton(text="Kilifi", callback_data="Kilifi ")],
-                       [InlineKeyboardButton(text="TanaRiver", callback_data="TanaRiver "),
-                        InlineKeyboardButton(text="Lamu", callback_data="Lamu "),
-                        InlineKeyboardButton(text="Taita-Taveta", callback_data="Taita-Taveta ")],
-                       [InlineKeyboardButton(text="Garissa", callback_data="Garissa "),
-                        InlineKeyboardButton(text="Wajir", callback_data="Wajir "),
-                        InlineKeyboardButton(text="Mandera", callback_data="Mandera ")],
-                       [InlineKeyboardButton(text="Marsabit", callback_data="Marsabit "),
-                        InlineKeyboardButton(text="Isiolo", callback_data="Isiolo "),
-                        InlineKeyboardButton(text="Meru22", callback_data="Meru22 ")],
-                       [InlineKeyboardButton(text="Tharaka-Nithi", callback_data="Tharaka-Nithi "),
-                        InlineKeyboardButton(text="Embu", callback_data="Embu "),
-                        InlineKeyboardButton(text="Kitui", callback_data="Kitui ")],
-                       [InlineKeyboardButton(text="Machakos", callback_data="Machakos "),
-                        InlineKeyboardButton(text="Makueni", callback_data="Makueni "),
-                        InlineKeyboardButton(text="Nyandarua", callback_data="Nyandarua ")],
-                       [InlineKeyboardButton(text="Nyeri", callback_data="Nyeri "),
-                        InlineKeyboardButton(text="Kirinyaga", callback_data="Kirinyaga "),
-                        InlineKeyboardButton(text="Murang’a", callback_data="Murang’a ")],
-                       [InlineKeyboardButton(text="Kiambu", callback_data="Kiambu "),
-                        InlineKeyboardButton(text="Turkana", callback_data="Turkana "),
-                        InlineKeyboardButton(text="WestPokot", callback_data="WestPokot ")],
-                       [InlineKeyboardButton(text="Samburu", callback_data="Samburu "),
-                        InlineKeyboardButton(text="TransNzoia", callback_data="TransNzoia "),
-                        InlineKeyboardButton(text="UasinGishu", callback_data="UasinGishu ")],
-                       [InlineKeyboardButton(text="Elgeyo-Marakwet", callback_data="Elgeyo-Marakwet "),
-                        InlineKeyboardButton(text="Nandi", callback_data="Nandi "),
-                        InlineKeyboardButton(text="Baringo", callback_data="Baringo ")],
-                       [InlineKeyboardButton(text="Laikipia", callback_data="Laikipia "),
-                        InlineKeyboardButton(text="Nakuru", callback_data="Nakuru "),
-                        InlineKeyboardButton(text="Narok", callback_data="Narok ")],
-                       [InlineKeyboardButton(text="Kajiado", callback_data="Kajiado "),
-                        InlineKeyboardButton(text="Kericho", callback_data="Kericho "),
-                        InlineKeyboardButton(text="Bomet", callback_data="Bomet ")],
-                       [InlineKeyboardButton(text="Kakamega", callback_data="Kakamega "),
-                        InlineKeyboardButton(text="Vihiga", callback_data="Vihiga "),
-                        InlineKeyboardButton(text="Bungoma", callback_data="Bungoma ")],
-                       [InlineKeyboardButton(text="Busia", callback_data="Busia "),
-                        InlineKeyboardButton(text="Siaya", callback_data="Siaya "),
-                        InlineKeyboardButton(text="Kisumu", callback_data="Kisumu ")],
-                       [InlineKeyboardButton(text="HomaBay", callback_data="HomaBay "),
-                        InlineKeyboardButton(text="Migori", callback_data="Migori "),
-                        InlineKeyboardButton(text="Kisii", callback_data="Kisii ")],
-                       [InlineKeyboardButton(text="Nyamira", callback_data="Nyamira "),
-                        InlineKeyboardButton(text="Nairobi", callback_data="Nairobi ")]]
+    inline_keyboard = [[InlineKeyboardButton(text="Baringo", callback_data="Baringo"),
+                        InlineKeyboardButton(text="Bomet", callback_data="Bomet"),
+                        InlineKeyboardButton(text="Bungoma", callback_data="Bungoma")],
+                       [InlineKeyboardButton(text="Busia", callback_data="Busia"),
+                        InlineKeyboardButton(text="Elgeyo-Marakwet", callback_data="Elgeyo-Marakwet"),
+                        InlineKeyboardButton(text="Embu", callback_data="Embu")], [
+                           InlineKeyboardButton(text="Garissa", callback_data="Garissa"),
+                           InlineKeyboardButton(text="HomaBay", callback_data="HomaBay"),
+                           InlineKeyboardButton(text="Isiolo", callback_data="Isiolo")], [
+                           InlineKeyboardButton(text="Kajiado", callback_data="Kajiado"),
+                           InlineKeyboardButton(text="Kakamega", callback_data="Kakamega"),
+                           InlineKeyboardButton(text="Kericho", callback_data="Kericho")], [
+                           InlineKeyboardButton(text="Kiambu", callback_data="Kiambu"),
+                           InlineKeyboardButton(text="Kilifi", callback_data="Kilifi"),
+                           InlineKeyboardButton(text="Kirinyaga", callback_data="Kirinyaga")], [
+                           InlineKeyboardButton(text="Kisii", callback_data="Kisii"),
+                           InlineKeyboardButton(text="Kisumu", callback_data="Kisumu"),
+                           InlineKeyboardButton(text="Kitui", callback_data="Kitui")], [
+                           InlineKeyboardButton(text="Kwale", callback_data="Kwale"),
+                           InlineKeyboardButton(text="Laikipia", callback_data="Laikipia"),
+                           InlineKeyboardButton(text="Lamu", callback_data="Lamu")], [
+                           InlineKeyboardButton(text="Machakos", callback_data="Machakos"),
+                           InlineKeyboardButton(text="Makueni", callback_data="Makueni"),
+                           InlineKeyboardButton(text="Mandera", callback_data="Mandera")], [
+                           InlineKeyboardButton(text="Marsabit", callback_data="Marsabit"),
+                           InlineKeyboardButton(text="Meru", callback_data="Meru"),
+                           InlineKeyboardButton(text="Migori", callback_data="Migori")], [
+                           InlineKeyboardButton(text="Mombasa", callback_data="Mombasa"),
+                           InlineKeyboardButton(text="Murang’a", callback_data="Murang’a"),
+                           InlineKeyboardButton(text="Nairobi", callback_data="Nairobi")], [
+                           InlineKeyboardButton(text="Nakuru", callback_data="Nakuru"),
+                           InlineKeyboardButton(text="Nandi", callback_data="Nandi"),
+                           InlineKeyboardButton(text="Narok", callback_data="Narok")], [
+                           InlineKeyboardButton(text="Nyamira", callback_data="Nyamira"),
+                           InlineKeyboardButton(text="Nyandarua", callback_data="Nyandarua"),
+                           InlineKeyboardButton(text="Nyeri", callback_data="Nyeri")], [
+                           InlineKeyboardButton(text="Samburu", callback_data="Samburu"),
+                           InlineKeyboardButton(text="Siaya", callback_data="Siaya"),
+                           InlineKeyboardButton(text="Taita-Taveta", callback_data="Taita-Taveta")], [
+                           InlineKeyboardButton(text="TanaRiver", callback_data="TanaRiver"),
+                           InlineKeyboardButton(text="Tharaka-Nithi", callback_data="Tharaka-Nithi"),
+                           InlineKeyboardButton(text="TransNzoia", callback_data="TransNzoia")], [
+                           InlineKeyboardButton(text="Turkana", callback_data="Turkana"),
+                           InlineKeyboardButton(text="UasinGishu", callback_data="UasinGishu"),
+                           InlineKeyboardButton(text="Vihiga", callback_data="Vihiga")], [
+                           InlineKeyboardButton(text="Wajir", callback_data="Wajir"),
+                           InlineKeyboardButton(text="WestPokot", callback_data="WestPokot")]]
 
     reply_keyboard_markup = InlineKeyboardMarkup(inline_keyboard, one_time_keyboard=True, resize_keyboard=True)
     update.message.reply_text("Choose a  You want to check power interruption details:    ",
@@ -75,14 +75,19 @@ def area(update, context):
     query.answer()
     global county_value
     county_value = query.data
+    print(county_value)
     data = functions.area_list(county_value)
-    print(f'This is the{data}')
+    print(data)
+    if data is None:
+        query.edit_message_text('Yaay..There Isn\'t any power interruption scheduled for this area.\n Bye')
+        return ConversationHandler.END
     inline_keyboard = []
     for i in data:
         inline_keyboard.append(InlineKeyboardButton(i, callback_data=i))
 
     print(inline_keyboard[0])
     reply_keyboard_markup = InlineKeyboardMarkup([inline_keyboard])
+    query.edit_message_text('--fetching--')
     query.edit_message_text(text="Choose a Area ", reply_markup=reply_keyboard_markup)
     return Place
 
@@ -90,11 +95,13 @@ def area(update, context):
 def place(update, context):
     query = update.callback_query
     query.answer()
-    time_out= functions.place_list(area=query.data, county=county_value)
-    print(county_value)
-    print(f'this is the{time_out}')
-    # print(f'This is the {place_out}')
+    place_value, time_value = functions.place_list(area=query.data, county=county_value)
+    place_value = '\n'.join(place_value)
+    place_value = time_value + '\n' + '-' * 55 + '\n' + place_value
+    query.edit_message_text('--fetching--')
+    query.edit_message_text(place_value)
 
+    context.bot.sendMessage(text='Bye', chat_id=update.effective_chat.id)
     return ConversationHandler.END
 
 
