@@ -6,9 +6,7 @@ regions = shelve_file['regions']
 
 def area_list(county):
     for region in regions.keys():
-        print(f'This is the region{region}')
         if county.strip().upper() in regions[region].keys():
-            print(f'This is the county{county}')
             areas = [area for area in regions[region][county.strip().upper()].keys()]
             return areas
         else:

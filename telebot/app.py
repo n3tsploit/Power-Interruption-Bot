@@ -12,6 +12,7 @@ print('Bot is starting')
 
 County, Area, Place = range(3)
 global county_value
+global area_value
 
 
 def start_command(update, context):
@@ -75,18 +76,16 @@ def area(update, context):
     query.answer()
     global county_value
     county_value = query.data
-    print(county_value)
     data = functions.area_list(county_value)
-    print(data)
     if data is None:
         query.edit_message_text('Yaay..There Isn\'t any power interruption scheduled for this area.\n Bye')
         return ConversationHandler.END
     inline_keyboard = []
     for i in data:
-        inline_keyboard.append(InlineKeyboardButton(i, callback_data=i))
+        inline_keyboard.append(InlineKeyboardButton(text=i, callback_data=i))
 
-    print(inline_keyboard[0])
-    reply_keyboard_markup = InlineKeyboardMarkup([inline_keyboard])
+    print(inline_keyboard)
+    reply_keyboard_markup = InlineKeyboardMarkup([inline_keyboard[i:i + 2] for i in range(0, len(inline_keyboard), 2)])
     query.edit_message_text('--fetching--')
     query.edit_message_text(text="Choose a Area ", reply_markup=reply_keyboard_markup)
     return Place
@@ -95,6 +94,7 @@ def area(update, context):
 def place(update, context):
     query = update.callback_query
     query.answer()
+    area_value = query.data
     place_value, time_value = functions.place_list(area=query.data, county=county_value)
     place_value = '\n'.join(place_value)
     place_value = time_value + '\n' + '-' * 55 + '\n' + place_value
@@ -115,6 +115,10 @@ def stop(update, context):
     return ConversationHandler.END
 
 
+def unknown(update, context):
+    update.message.reply_text('Sorry I cannot understand the text!')
+
+
 def main():
     updater = Updater(TOKEN, use_context=True)
     disp = updater.dispatcher
@@ -130,6 +134,8 @@ def main():
         fallbacks=[CommandHandler('stop', stop)]
     )
     disp.add_handler(conv_handler)
+
+    disp.add_handler(MessageHandler(Filters.text,unknown))
 
     updater.start_polling()
     updater.idle()
