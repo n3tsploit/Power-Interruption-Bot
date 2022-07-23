@@ -18,7 +18,6 @@ importlib-metadata==4.12.0
 itsdangerous==2.1.2
 Jinja2==3.1.2
 lxml==4.9.1
-logging
 MarkupSafe==2.1.1
 numpy==1.23.0
 olefile==0.46
