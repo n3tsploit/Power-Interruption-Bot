@@ -9,7 +9,7 @@ import os
 load_dotenv(Path(".env"))
 TOKEN = os.getenv('bot_token')
 URL = os.getenv('URL')
-PORT = int(os.environ.get('PORT', 5000))
+PORT = int(os.environ.get('PORT', 8443))
 
 print('Bot is starting')
 
@@ -141,8 +141,10 @@ def main():
 
     disp.add_handler(MessageHandler(Filters.text,unknown))
 
-    updater.start_webhook(listen="0.0.0.0", port=PORT, url_path=TOKEN, webhook_url=URL + TOKEN)
-    updater.bot.setWebhook(URL + TOKEN)
+    updater.start_webhook(listen="0.0.0.0",
+                          port=int(PORT),
+                          url_path=TOKEN,
+                          webhook_url=URL + TOKEN)
     updater.idle()
 
 
