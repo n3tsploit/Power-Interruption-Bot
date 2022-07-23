@@ -142,6 +142,7 @@ def main():
     disp.add_handler(MessageHandler(Filters.text,unknown))
 
     updater.start_webhook(listen="0.0.0.0", port=PORT, url_path=TOKEN, webhook_url=URL + TOKEN)
+    updater.bot.setWebhook(URL + TOKEN)
     updater.idle()
 
 
