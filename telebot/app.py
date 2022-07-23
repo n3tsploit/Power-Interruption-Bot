@@ -9,9 +9,7 @@ import os
 load_dotenv(Path(".env"))
 TOKEN = os.getenv('bot_token')
 URL = os.getenv('URL')
-PORT = int(os.getenv('PORT'))
-
-
+PORT = int(os.environ.get('PORT', 5000))
 
 print('Bot is starting')
 
