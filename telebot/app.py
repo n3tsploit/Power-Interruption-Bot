@@ -3,7 +3,7 @@ from telegram import *
 import functions
 from dotenv import load_dotenv
 from pathlib import Path
-import os, logging
+import os
 
 
 load_dotenv(Path(".env"))
@@ -11,10 +11,7 @@ TOKEN = os.getenv('bot_token')
 URL = os.getenv('URL')
 PORT = int(os.getenv('PORT'))
 
-logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-                    level=logging.INFO)
 
-logger = logging.getLogger(__name__)
 
 print('Bot is starting')
 
