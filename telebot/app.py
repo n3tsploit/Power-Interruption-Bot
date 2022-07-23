@@ -3,10 +3,18 @@ from telegram import *
 import functions
 from dotenv import load_dotenv
 from pathlib import Path
-import os
+import os, logging
+
 
 load_dotenv(Path(".env"))
 TOKEN = os.getenv('bot_token')
+URL = os.getenv('URL')
+PORT = int(os.getenv('PORT'))
+
+logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+                    level=logging.INFO)
+
+logger = logging.getLogger(__name__)
 
 print('Bot is starting')
 
@@ -120,6 +128,7 @@ def unknown(update, context):
 
 
 def main():
+
     updater = Updater(TOKEN, use_context=True)
     disp = updater.dispatcher
 
@@ -137,7 +146,7 @@ def main():
 
     disp.add_handler(MessageHandler(Filters.text,unknown))
 
-    updater.start_polling()
+    updater.start_webhook(listen="0.0.0.0", port=PORT, url_path=TOKEN, webhook_url=URL + TOKEN)
     updater.idle()
 
 
