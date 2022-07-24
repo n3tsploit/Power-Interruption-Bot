@@ -1,7 +1,7 @@
 import shelve, re
 
-shelve_file = shelve.open('../data_file')
-regions = shelve_file['regions']
+# shelve_file = shelve.open('../data_file')
+# regions = shelve_file['regions']
 
 
 def area_list(county):
