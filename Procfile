@@ -1,1 +1,1 @@
-web: python3 ./telebot/app.py
+web: gunicorn app:./telebot/app.py
