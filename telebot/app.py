@@ -1,6 +1,6 @@
 from telegram.ext import *
 from telegram import *
-import functions
+from telebot import functions
 from dotenv import load_dotenv
 from pathlib import Path
 import os
