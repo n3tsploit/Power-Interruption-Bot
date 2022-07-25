@@ -7,7 +7,7 @@ import os
 
 def extract_pdf():
     os.makedirs('telebot/content', exist_ok=True)
-    textract_text = textract.process(f'../../../Desktop/kplc/Interruptions - 26.08.2021 (Part 1 of 2).pdf')
+    textract_text = textract.process(f'../../../Desktop/kplc/Interruptions - 25.10.2021 Part 2 of 2.pdf')
     textract_str_text = codecs.decode(textract_text)
     with open(f'telebot/content/extracted_data.txt', 'w') as f:
         f.write(textract_str_text.strip('\n'))
@@ -19,6 +19,9 @@ def clean_extracted_data():
     pattern2_a = re.compile(r"For further", re.IGNORECASE)
     pattern2_b = re.compile(r"www\.kplc\.co\.ke", re.IGNORECASE)
     flag = True
+    with open('telebot/content/cleaned_data.txt', 'w'):
+        pass
+
     with open(r'telebot/content/extracted_data.txt', 'r', encoding='utf-8') as myfile:
         for line in myfile:
             if pattern1_a.search(line) or pattern2_a.search(line):
