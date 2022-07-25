@@ -1,9 +1,18 @@
 from telegram.ext import *
 from telegram import *
 from telebot import functions
+from dotenv import load_dotenv
 import os
+from pathlib import Path
+import shelve
 
+functions.extract_pdf()
+functions.clean_extracted_data()
+functions.save_data_to_shelve()
+shelve_file = shelve.open('telebot/content/data_file')
+regions = shelve_file['regions']
 
+load_dotenv(Path("./telebot/.env"))
 TOKEN = os.getenv('TOKEN')
 PORT = int(os.environ.get('PORT', 88))
 
@@ -75,7 +84,7 @@ def area(update, context):
     query.answer()
     global county_value
     county_value = query.data
-    data = functions.area_list(county_value)
+    data = functions.area_list(county=county_value, regions=regions)
     if data is None:
         query.edit_message_text('Yaay..There Isn\'t any power interruption scheduled for this area.\n Bye')
         return ConversationHandler.END
@@ -83,7 +92,6 @@ def area(update, context):
     for i in data:
         inline_keyboard.append(InlineKeyboardButton(text=i, callback_data=i))
 
-    print(inline_keyboard)
     reply_keyboard_markup = InlineKeyboardMarkup([inline_keyboard[i:i + 2] for i in range(0, len(inline_keyboard), 2)])
     query.edit_message_text('--fetching--')
     query.edit_message_text(text="Choose a Area ", reply_markup=reply_keyboard_markup)
@@ -94,7 +102,7 @@ def place(update, context):
     query = update.callback_query
     query.answer()
     area_value = query.data
-    place_value, time_value = functions.place_list(area=query.data, county=county_value)
+    place_value, time_value = functions.place_list(area=query.data, county=county_value, regions=regions)
     place_value = '\n'.join(place_value)
     place_value = time_value + '\n' + '-' * 55 + '\n' + place_value
     query.edit_message_text('--fetching--')
@@ -119,7 +127,6 @@ def unknown(update, context):
 
 
 def main():
-
     updater = Updater(TOKEN, use_context=True)
     disp = updater.dispatcher
 
@@ -137,9 +144,10 @@ def main():
 
     disp.add_handler(MessageHandler(Filters.text,unknown))
 
-    updater.start_webhook(listen="0.0.0.0",
-                          port=int(PORT),
-                          url_path=TOKEN,
-                          webhook_url='https://powerinterruption.herokuapp.com/' + TOKEN)
+    # updater.start_webhook(listen="0.0.0.0",
+    #                       port=int(PORT),
+    #                       url_path=TOKEN,
+    #                       webhook_url='https://powerinterruption.herokuapp.com/' + TOKEN)
+    updater.start_polling()
 
     updater.idle()
