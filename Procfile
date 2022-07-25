@@ -1,1 +1,1 @@
-web: telebot/app.py
+web: run.py
