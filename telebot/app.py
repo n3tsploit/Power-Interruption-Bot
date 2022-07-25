@@ -1,12 +1,9 @@
 from telegram.ext import *
 from telegram import *
 from telebot import functions
-from dotenv import load_dotenv
-from pathlib import Path
 import os
 
 
-load_dotenv(Path(".env"))
 TOKEN = os.getenv('TOKEN')
 PORT = int(os.environ.get('PORT', 88))
 
@@ -146,7 +143,3 @@ def main():
                           webhook_url='https://powerinterruption.herokuapp.com/' + TOKEN)
 
     updater.idle()
-
-
-if __name__ == '__main__':
-    main()
