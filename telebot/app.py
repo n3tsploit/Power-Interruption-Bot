@@ -9,7 +9,7 @@ import os
 load_dotenv(Path(".env"))
 TOKEN = os.getenv('bot_token')
 URL = os.getenv('URL')
-PORT = int(os.environ.get('PORT', '8443'))
+PORT = int(os.environ.get('PORT', '443'))
 
 print('Bot is starting')
 
@@ -144,7 +144,7 @@ def main():
     updater.start_webhook(listen="0.0.0.0",
                           port=443,
                           url_path=TOKEN,
-                          webhook_url='https://powerinterruption.herokuapp.com:443/' + TOKEN)
+                          webhook_url='https://powerinterruption.herokuapp.com/' + TOKEN)
     updater.idle()
 
 
