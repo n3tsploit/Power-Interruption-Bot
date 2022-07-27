@@ -7,7 +7,7 @@ import os
 
 def extract_pdf():
     os.makedirs('telebot/content', exist_ok=True)
-    textract_text = textract.process(f'../../../Desktop/kplc/Interruptions - 21.07.2022.pdf')
+    textract_text = textract.process(f'../../../Desktop/kplc/Interruptions - 14.07.2022.pdf')
     textract_str_text = codecs.decode(textract_text)
     with open(f'telebot/content/extracted_data.txt', 'w') as f:
         f.write(textract_str_text.strip('\n'))
