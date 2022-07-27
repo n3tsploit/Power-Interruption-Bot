@@ -7,7 +7,7 @@ import os
 
 def extract_pdf():
     os.makedirs('telebot/content', exist_ok=True)
-    textract_text = textract.process(f'../../../Desktop/kplc/Interruptions - 25.10.2021 Part 2 of 2.pdf')
+    textract_text = textract.process(f'../../../Desktop/kplc/Interruptions - 21.07.2022.pdf')
     textract_str_text = codecs.decode(textract_text)
     with open(f'telebot/content/extracted_data.txt', 'w') as f:
         f.write(textract_str_text.strip('\n'))
@@ -36,7 +36,7 @@ def clean_extracted_data():
 def save_data_to_shelve():
     regions = {}
     region_regex = re.compile(r"region", re.IGNORECASE)
-    area_regex = re.compile(r"area", re.IGNORECASE)
+    area_regex = re.compile(r"area:", re.IGNORECASE)
     county_regex = re.compile(r"county", re.IGNORECASE)
     previous_line = ''
     with open('telebot/content/cleaned_data.txt', 'r') as r:
@@ -74,7 +74,11 @@ def save_data_to_shelve():
 def area_list(county, regions):
     for region in regions.keys():
         if county.strip().upper() in regions[region].keys():
+            print(region)
             areas = [area for area in regions[region][county.strip().upper()].keys()]
+            print(areas)
+            if '' in areas:
+                areas.remove('')
             return areas
         else:
             continue

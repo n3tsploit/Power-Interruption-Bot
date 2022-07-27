@@ -84,13 +84,14 @@ def area(update, context):
     query.answer()
     global county_value
     county_value = query.data
+    print(county_value)
     data = functions.area_list(county=county_value, regions=regions)
     if data is None:
         query.edit_message_text('Yaay..There Isn\'t any power interruption scheduled for this area.\n Bye')
         return ConversationHandler.END
     inline_keyboard = []
     for i in data:
-        inline_keyboard.append(InlineKeyboardButton(text=i, callback_data=i))
+        inline_keyboard.append(InlineKeyboardButton(text=str(i), callback_data=str(i)))
 
     reply_keyboard_markup = InlineKeyboardMarkup([inline_keyboard[i:i + 2] for i in range(0, len(inline_keyboard), 2)])
     query.edit_message_text('--fetching--')
@@ -102,6 +103,7 @@ def place(update, context):
     query = update.callback_query
     query.answer()
     area_value = query.data
+    print(area_value)
     place_value, time_value = functions.place_list(area=query.data, county=county_value, regions=regions)
     place_value = '\n'.join(place_value)
     place_value = time_value + '\n' + '-' * 55 + '\n' + place_value
