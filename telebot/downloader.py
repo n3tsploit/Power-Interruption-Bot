@@ -1,4 +1,5 @@
 import bs4, requests, os
+from pathlib import Path
 
 res = requests.get('https://kplc.co.ke/category/view/50/planned-power-interruptions')
 res.raise_for_status()
@@ -14,5 +15,8 @@ else:
     os.makedirs('./content/', exist_ok=True)
     res = requests.get(url)
     res.raise_for_status()
+    p = Path('./content/')
+    print(list(p.glob('*.pdf')))
+    os.remove(list(p.glob('*.pdf'))[0])
     with open('./content/'+os.path.basename(url),'wb') as r:
         r.write(res.content)
