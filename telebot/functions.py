@@ -3,11 +3,37 @@ import re
 import shelve
 import textract
 import os
+import requests, bs4
+from pathlib import Path
 
 
-def extract_pdf():
+def parse_content():
+    res = requests.get('https://kplc.co.ke/category/view/50/planned-power-interruptions')
+    res.raise_for_status()
+
+    soup = bs4.BeautifulSoup(res.text, 'html.parser')
+
+    links = soup.select('.items .intro li a')
+    if not links:
+        print('No content Found')
+    else:
+        url = str(links[0].get('href'))
+        print(url)
+        os.makedirs('telebot/content/', exist_ok=True)
+        res = requests.get(url)
+        res.raise_for_status()
+        p = Path('telebot/content/')
+        print(list(p.glob('*.pdf')))
+        if len(list(p.glob('*.pdf'))) > 0:
+            os.remove(list(p.glob('*.pdf'))[0])
+        with open('telebot/content/' + os.path.basename(url), 'wb') as r:
+            r.write(res.content)
+        return os.path.basename(url)
+
+
+def extract_pdf(url):
     os.makedirs('telebot/content', exist_ok=True)
-    textract_text = textract.process(f'../../../Desktop/kplc/Interruptions - 14.07.2022.pdf')
+    textract_text = textract.process(f'telebot/content/{url}')
     textract_str_text = codecs.decode(textract_text)
     with open(f'telebot/content/extracted_data.txt', 'w') as f:
         f.write(textract_str_text.strip('\n'))

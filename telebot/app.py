@@ -6,7 +6,8 @@ import os
 from pathlib import Path
 import shelve
 
-functions.extract_pdf()
+url = functions.parse_content()
+functions.extract_pdf(url)
 functions.clean_extracted_data()
 functions.save_data_to_shelve()
 shelve_file = shelve.open('telebot/content/data_file')
