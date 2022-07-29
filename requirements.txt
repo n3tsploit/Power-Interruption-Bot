@@ -52,3 +52,5 @@ Werkzeug==2.1.2
 xlrd==1.2.0
 XlsxWriter==3.0.3
 zipp==3.8.0
+
+telegram~=0.0.1

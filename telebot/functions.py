@@ -117,7 +117,7 @@ def place_list(county, area, regions):
         if county in regions[region].keys():
             time_outage = regions[region][county][area]['when'].upper()
             time_outage = re.sub('(\s\s\s)+', '', time_outage)
-            time_outage = '\nTIME'.join(time_outage.split('TIME'))
+            time_outage = '\n⏱️TIME'.join(time_outage.split('TIME'))
             place_outage = [place.strip().capitalize() for place in
                             ''.join(regions[region][county][area]['where']).split(',')]
             return place_outage, time_outage

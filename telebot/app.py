@@ -1,3 +1,4 @@
+import telegram
 from telegram.ext import *
 from telegram import *
 from telebot import functions
@@ -24,12 +25,16 @@ global county_value
 global area_value
 
 
-def start_command(update, context):
+def start_command(update,context):
     update.message.reply_text(f'Greetings {update.message.from_user.first_name}\U0001F601\n\nThis is an unofficial bot '
                               f'which shows you Planned Power Interruptions in 🇰🇪.\n\nCommands are as follows:-'
-                              f'\n\U0001F4A1/start - To start the bot and check the areas Planned for '
-                              f'Interruptions.\n\U0001F4A1/pdf - To download a pdf of areas listed for Planned'
-                              f'Interruptions.\n\U0001F4A1/stop - To exit the conversion.')
+                              f'\n\U0001F4A1/check - To check the areas Planned for '
+                              f'Interruptions.\n\U0001F4A1/pdf - To download a pdf of areas listed for Planned '
+                              f'Interruptions.\n\U0001F4A1/info - To get information about the bot.'
+                              f'\n\U0001F4A1/stop - To exit the conversion.')
+
+
+def check_command(update, context):
     inline_keyboard = [[InlineKeyboardButton(text="Baringo", callback_data="Baringo"),
                         InlineKeyboardButton(text="Bomet", callback_data="Bomet"),
                         InlineKeyboardButton(text="Bungoma", callback_data="Bungoma")],
@@ -98,9 +103,9 @@ def area(update, context):
     for i in data:
         inline_keyboard.append(InlineKeyboardButton(text=str(i), callback_data=str(i)))
 
-    reply_keyboard_markup = InlineKeyboardMarkup([inline_keyboard[i:i + 2] for i in range(0, len(inline_keyboard), 2)])
+    reply_keyboard_markup = InlineKeyboardMarkup([inline_keyboard[i:i + 1] for i in range(0, len(inline_keyboard), 1)])
     query.edit_message_text('--fetching--')
-    query.edit_message_text(text="If your area is listed below click it to get more details.\n"
+    query.edit_message_text(text="Select your area if it is listed below to get more details.\n"
                                  "If not,then there isn't Planned Interruptions in your area.Click /stop to exit.",
                             reply_markup=reply_keyboard_markup)
     return Place
@@ -109,40 +114,35 @@ def area(update, context):
 def place(update, context):
     query = update.callback_query
     query.answer()
-    area_value = query.data
-    print(area_value)
     place_value, time_value = functions.place_list(area=query.data, county=county_value, regions=regions)
-    place_value = '\n'.join(place_value)
-    place_value = time_value + '\n' + '-' * 55 + '\n' + place_value
+    place_value = '\n▪️'.join(place_value)
+    place_value = '<b>📅'+time_value + '\n' + '-' * 49 + '\n' + 'Specific places to be affected are:</b>\n▪️' + place_value
     query.edit_message_text('--fetching--')
-    query.edit_message_text(place_value)
+    query.edit_message_text(place_value,parse_mode=telegram.ParseMode.HTML)
 
-    context.bot.sendMessage(text='Bye', chat_id=update.effective_chat.id)
+    context.bot.sendMessage(text='Bye👋', chat_id=update.effective_chat.id)
     return ConversationHandler.END
 
 
-def help_command(update, context):
-    update.message.reply_text('These are some of the commands')
-
-
 def stop(update, context):
-    update.message.reply_text('Bye..see you later')
+    update.message.reply_text('Bye..see you later👋')
 
     return ConversationHandler.END
 
 
 def unknown(update, context):
-    update.message.reply_text('Sorry I cannot understand the text!')
+    update.message.reply_text('Sorry I cannot understand the text!🥲')
 
 
 def main():
     updater = Updater(TOKEN, use_context=True)
     disp = updater.dispatcher
 
-    disp.add_handler(CommandHandler('help', help_command))
+    disp.add_handler(CommandHandler('info', start_command))
+    disp.add_handler(CommandHandler('start', start_command))
 
     conv_handler = ConversationHandler(
-        entry_points=[CommandHandler('start', start_command)],
+        entry_points=[CommandHandler('check', check_command)],
         states={
             Area: [CallbackQueryHandler(area)],
             Place: [CallbackQueryHandler(place)]
