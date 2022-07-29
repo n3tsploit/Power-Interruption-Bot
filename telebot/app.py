@@ -6,10 +6,10 @@ import os
 from pathlib import Path
 import shelve
 
-url = functions.parse_content()
-functions.extract_pdf(url)
-functions.clean_extracted_data()
-functions.save_data_to_shelve()
+# url = functions.parse_content()
+# functions.extract_pdf(url)
+# functions.clean_extracted_data()
+# functions.save_data_to_shelve()
 shelve_file = shelve.open('telebot/content/data_file')
 regions = shelve_file['regions']
 
@@ -17,7 +17,7 @@ load_dotenv(Path("./telebot/.env"))
 TOKEN = os.getenv('TOKEN')
 PORT = int(os.environ.get('PORT', 88))
 
-print('Bot is starting')
+print('Bot is starting'+'\xF0\x9F\x98\x81	')
 
 County, Area, Place = range(3)
 global county_value
@@ -25,7 +25,8 @@ global area_value
 
 
 def start_command(update, context):
-    update.message.reply_text('Welcome')
+    update.message.reply_text(f"""Greetings {update.message.from_user.first_name}
+                              \U0001F601""")
     inline_keyboard = [[InlineKeyboardButton(text="Baringo", callback_data="Baringo"),
                         InlineKeyboardButton(text="Bomet", callback_data="Bomet"),
                         InlineKeyboardButton(text="Bungoma", callback_data="Bungoma")],
