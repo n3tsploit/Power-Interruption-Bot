@@ -17,7 +17,7 @@ load_dotenv(Path("./telebot/.env"))
 TOKEN = os.getenv('TOKEN')
 PORT = int(os.environ.get('PORT', 88))
 
-print('Bot is starting'+'\xF0\x9F\x98\x81	')
+print('Bot is starting')
 
 County, Area, Place = range(3)
 global county_value
@@ -25,8 +25,11 @@ global area_value
 
 
 def start_command(update, context):
-    update.message.reply_text(f"""Greetings {update.message.from_user.first_name}
-                              \U0001F601""")
+    update.message.reply_text(f'Greetings {update.message.from_user.first_name}\U0001F601\n\nThis is an unofficial bot '
+                              f'which shows you Planned Power Interruptions in 🇰🇪.\n\nCommands are as follows:-'
+                              f'\n\U0001F4A1/start - To start the bot and check the areas Planned for '
+                              f'Interruptions.\n\U0001F4A1/pdf - To download a pdf of areas listed for Planned'
+                              f'Interruptions.\n\U0001F4A1/stop - To exit the conversion.')
     inline_keyboard = [[InlineKeyboardButton(text="Baringo", callback_data="Baringo"),
                         InlineKeyboardButton(text="Bomet", callback_data="Bomet"),
                         InlineKeyboardButton(text="Bungoma", callback_data="Bungoma")],
@@ -76,7 +79,7 @@ def start_command(update, context):
                            InlineKeyboardButton(text="WestPokot", callback_data="WestPokot")]]
 
     reply_keyboard_markup = InlineKeyboardMarkup(inline_keyboard, one_time_keyboard=True, resize_keyboard=True)
-    update.message.reply_text("Choose a  You want to check power interruption details:    ",
+    update.message.reply_text("Select your County:",
                               reply_markup=reply_keyboard_markup)
     return Area
 
@@ -89,7 +92,7 @@ def area(update, context):
     print(county_value)
     data = functions.area_list(county=county_value, regions=regions)
     if data is None:
-        query.edit_message_text('Yaay..There Isn\'t any power interruption scheduled for this area.\n Bye')
+        query.edit_message_text('No Planned Power Interruptions in this County!\nExiting...')
         return ConversationHandler.END
     inline_keyboard = []
     for i in data:
@@ -97,7 +100,9 @@ def area(update, context):
 
     reply_keyboard_markup = InlineKeyboardMarkup([inline_keyboard[i:i + 2] for i in range(0, len(inline_keyboard), 2)])
     query.edit_message_text('--fetching--')
-    query.edit_message_text(text="Choose a Area ", reply_markup=reply_keyboard_markup)
+    query.edit_message_text(text="If your area is listed below click it to get more details.\n"
+                                 "If not,then there isn't Planned Interruptions in your area.Click /stop to exit.",
+                            reply_markup=reply_keyboard_markup)
     return Place
 
 
@@ -146,7 +151,7 @@ def main():
     )
     disp.add_handler(conv_handler)
 
-    disp.add_handler(MessageHandler(Filters.text,unknown))
+    disp.add_handler(MessageHandler(Filters.text, unknown))
 
     # updater.start_webhook(listen="0.0.0.0",
     #                       port=int(PORT),
