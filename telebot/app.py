@@ -7,10 +7,10 @@ import os
 from pathlib import Path
 import shelve
 
-# url = functions.parse_content()
-# functions.extract_pdf(url)
-# functions.clean_extracted_data()
-# functions.save_data_to_shelve()
+url = functions.parse_content()
+functions.extract_pdf(url)
+functions.clean_extracted_data()
+functions.save_data_to_shelve()
 shelve_file = shelve.open('telebot/content/data_file')
 regions = shelve_file['regions']
 
@@ -84,7 +84,7 @@ def check_command(update, context):
                            InlineKeyboardButton(text="WestPokot", callback_data="WestPokot")]]
 
     reply_keyboard_markup = InlineKeyboardMarkup(inline_keyboard, one_time_keyboard=True, resize_keyboard=True)
-    update.message.reply_text("Select your County:",
+    update.message.reply_text("Please select your County:",
                               reply_markup=reply_keyboard_markup)
     return Area
 

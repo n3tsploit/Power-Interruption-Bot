@@ -1,10 +1,13 @@
 import codecs
+import os
 import re
 import shelve
-import textract
-import os
-import requests, bs4
+from datetime import datetime
 from pathlib import Path
+
+import bs4
+import requests
+import textract
 
 
 def parse_content():
@@ -17,7 +20,27 @@ def parse_content():
     if not links:
         print('No content Found')
     else:
-        url = str(links[0].get('href'))
+        dates = []
+        for link in links:
+            file_name = os.path.basename(link.get('href'))
+            date_pattern = re.compile(r"""^(.*?)
+                ((0|1|2|3)?\d)\.
+                ((0|1)?\d)\.
+                ((19|20)\d\d)
+                (.*?)$
+                """, re.VERBOSE)
+            mo = date_pattern.search(file_name)
+            day_part = mo.group(2)
+            month_part = mo.group(4)
+            year_part = mo.group(6)
+            send = day_part + '.' + month_part + '.' + year_part
+            dates.append(send)
+        latest_date = max(dates, key=lambda d: datetime.strptime(d, '%d.%m.%Y'))
+        pattern_latest_date = re.compile(rf"{latest_date}", re.IGNORECASE)
+        for link in links:
+            if pattern_latest_date.search(str(os.path.basename(link.get('href')))):
+                url = link.get('href')
+                break
         print(url)
         os.makedirs('telebot/content/', exist_ok=True)
         res = requests.get(url)
