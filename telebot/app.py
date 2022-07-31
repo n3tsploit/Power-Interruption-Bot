@@ -132,6 +132,7 @@ def stop(update, context):
 
 
 def pdf_command(update, context):
+    update.message.reply_text('--fetching--')
     pdf_file = open(f'telebot/content/{pdf_name}', 'rb')
     chat_id = update.effective_chat.id
     return context.bot.send_document(chat_id, pdf_file)
