@@ -7,12 +7,13 @@ import os
 from pathlib import Path
 import shelve
 
-url = functions.parse_content()
-functions.extract_pdf(url)
-functions.clean_extracted_data()
-functions.save_data_to_shelve()
+# pdf_name = functions.parse_content()
+# functions.extract_pdf(pdf_name)
+# functions.clean_extracted_data()
+# functions.save_data_to_shelve()
 shelve_file = shelve.open('telebot/content/data_file')
 regions = shelve_file['regions']
+pdf_name = shelve_file['pdf_name']
 
 load_dotenv(Path("./telebot/.env"))
 TOKEN = os.getenv('TOKEN')
@@ -39,7 +40,7 @@ def check_command(update, context):
                         InlineKeyboardButton(text="Bomet", callback_data="Bomet"),
                         InlineKeyboardButton(text="Bungoma", callback_data="Bungoma")],
                        [InlineKeyboardButton(text="Busia", callback_data="Busia"),
-                        InlineKeyboardButton(text="Elgeyo-Marakwet", callback_data="Elgeyo-Marakwet"),
+                        InlineKeyboardButton(text="Elgeyo-Marakwet", callback_data="Elgeyo Marakwet"),
                         InlineKeyboardButton(text="Embu", callback_data="Embu")], [
                            InlineKeyboardButton(text="Garissa", callback_data="Garissa"),
                            InlineKeyboardButton(text="HomaBay", callback_data="HomaBay"),
@@ -73,12 +74,12 @@ def check_command(update, context):
                            InlineKeyboardButton(text="Nyeri", callback_data="Nyeri")], [
                            InlineKeyboardButton(text="Samburu", callback_data="Samburu"),
                            InlineKeyboardButton(text="Siaya", callback_data="Siaya"),
-                           InlineKeyboardButton(text="Taita-Taveta", callback_data="Taita-Taveta")], [
-                           InlineKeyboardButton(text="TanaRiver", callback_data="TanaRiver"),
-                           InlineKeyboardButton(text="Tharaka-Nithi", callback_data="Tharaka-Nithi"),
-                           InlineKeyboardButton(text="TransNzoia", callback_data="TransNzoia")], [
+                           InlineKeyboardButton(text="Taita-Taveta", callback_data="Taita Taveta")], [
+                           InlineKeyboardButton(text="TanaRiver", callback_data="Tana River"),
+                           InlineKeyboardButton(text="Tharaka-Nithi", callback_data="Tharaka Nithi"),
+                           InlineKeyboardButton(text="TransNzoia", callback_data="Trans Nzoia")], [
                            InlineKeyboardButton(text="Turkana", callback_data="Turkana"),
-                           InlineKeyboardButton(text="UasinGishu", callback_data="UasinGishu"),
+                           InlineKeyboardButton(text="UasinGishu", callback_data="Uasin Gishu"),
                            InlineKeyboardButton(text="Vihiga", callback_data="Vihiga")], [
                            InlineKeyboardButton(text="Wajir", callback_data="Wajir"),
                            InlineKeyboardButton(text="WestPokot", callback_data="WestPokot")]]
@@ -130,6 +131,12 @@ def stop(update, context):
     return ConversationHandler.END
 
 
+def pdf_command(update, context):
+    pdf_file = open(f'telebot/content/{pdf_name}', 'rb')
+    chat_id = update.effective_chat.id
+    return context.bot.send_document(chat_id, pdf_file)
+
+
 def unknown(update, context):
     update.message.reply_text('Sorry I cannot understand the text!🥲')
 
@@ -140,6 +147,7 @@ def main():
 
     disp.add_handler(CommandHandler('info', start_command))
     disp.add_handler(CommandHandler('start', start_command))
+    disp.add_handler(CommandHandler('pdf', pdf_command))
 
     conv_handler = ConversationHandler(
         entry_points=[CommandHandler('check', check_command)],

@@ -47,16 +47,21 @@ def parse_content():
         res.raise_for_status()
         p = Path('telebot/content/')
         print(list(p.glob('*.pdf')))
+        pdf_name = str(os.path.basename(url))
         if len(list(p.glob('*.pdf'))) > 0:
             os.remove(list(p.glob('*.pdf'))[0])
-        with open('telebot/content/' + os.path.basename(url), 'wb') as r:
+        with open('telebot/content/' + pdf_name, 'wb') as r:
             r.write(res.content)
-        return os.path.basename(url)
+        f = shelve.open('telebot/content/data_file')
+        f['pdf_name'] = pdf_name
+        f.close()
+
+        return pdf_name
 
 
-def extract_pdf(url):
+def extract_pdf(pdf_name):
     os.makedirs('telebot/content', exist_ok=True)
-    textract_text = textract.process(f'telebot/content/{url}')
+    textract_text = textract.process(f'telebot/content/{pdf_name}')
     textract_str_text = codecs.decode(textract_text)
     with open(f'telebot/content/extracted_data.txt', 'w') as f:
         f.write(textract_str_text.strip('\n'))
