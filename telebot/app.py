@@ -23,7 +23,7 @@ global regions
 
 
 def update_schedule():
-    schedule.every().monday.at("19:45").do(functions.check_updates)
+    schedule.every().monday.at("20:20").do(functions.check_updates)
     while True:
         schedule.run_pending()
         time.sleep(1)
@@ -148,7 +148,7 @@ def pdf_command(update, context):
 
 
 def unknown(update, context):
-    update.message.reply_text('Sorry I cannot understand the text!🥲.Click /stop  to refresh.')
+    update.message.reply_text('Sorry I cannot understand the text!🥲.')
 
 
 def main():
@@ -160,7 +160,6 @@ def main():
 
     disp.add_handler(CommandHandler('info', start_command))
     disp.add_handler(CommandHandler('start', start_command))
-    disp.add_handler(CommandHandler('stop', stop))
     disp.add_handler(CommandHandler('pdf', pdf_command))
 
     conv_handler = ConversationHandler(
