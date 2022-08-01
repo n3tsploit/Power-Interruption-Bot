@@ -102,7 +102,6 @@ def area(update, context):
     query = update.callback_query
     query.answer()
     county_value = query.data
-    print(county_value)
     data = functions.area_list(county=county_value, regions=regions)
     if data is None:
         query.edit_message_text('No Planned Power Interruptions in this County!\nExiting...')
@@ -161,6 +160,7 @@ def main():
 
     disp.add_handler(CommandHandler('info', start_command))
     disp.add_handler(CommandHandler('start', start_command))
+    disp.add_handler(CommandHandler('stop', stop))
     disp.add_handler(CommandHandler('pdf', pdf_command))
 
     conv_handler = ConversationHandler(

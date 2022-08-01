@@ -127,6 +127,7 @@ def save_data_to_shelve():
 def area_list(county, regions):
     for region in regions.keys():
         if county.strip().upper() in regions[region].keys():
+            print(county)
             print(region)
             areas = [area for area in regions[region][county.strip().upper()].keys()]
             print(areas)
