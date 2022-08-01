@@ -2,6 +2,7 @@ import codecs
 import os
 import re
 import shelve
+import time
 from datetime import datetime
 from pathlib import Path
 
@@ -149,3 +150,18 @@ def place_list(county, area, regions):
             place_outage = [place.strip().capitalize() for place in
                             ''.join(regions[region][county][area]['where']).split(',')]
             return place_outage, time_outage
+
+
+def check_updates():
+    pdf_name = parse_content()
+    time.sleep(10)
+    extract_pdf(pdf_name)
+    time.sleep(3)
+    clean_extracted_data()
+    time.sleep(3)
+    save_data_to_shelve()
+
+    print(f'Checked for updates on {datetime.today().strftime("%Y/%m/%d %H:%M:%S")}')
+
+def lol():
+    print('med')

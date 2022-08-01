@@ -1,3 +1,5 @@
+import time
+import schedule
 import telegram
 from telegram.ext import *
 from telegram import *
@@ -5,15 +7,15 @@ from telebot import functions
 from dotenv import load_dotenv
 import os
 from pathlib import Path
-import shelve
+import shelve, threading
 
-# pdf_name = functions.parse_content()
-# functions.extract_pdf(pdf_name)
-# functions.clean_extracted_data()
-# functions.save_data_to_shelve()
-shelve_file = shelve.open('telebot/content/data_file')
-regions = shelve_file['regions']
-pdf_name = shelve_file['pdf_name']
+
+def hellos():
+    schedule.every(3).seconds.do(functions.lol)
+    while True:
+        schedule.run_pending()
+        time.sleep(1)
+
 
 load_dotenv(Path("./telebot/.env"))
 TOKEN = os.getenv('TOKEN')
@@ -24,6 +26,7 @@ print('Bot is starting')
 County, Area, Place = range(3)
 global county_value
 global area_value
+global regions
 
 
 def start_command(update,context):
@@ -91,9 +94,13 @@ def check_command(update, context):
 
 
 def area(update, context):
+    global county_value
+    global regions
+    shelve_file = shelve.open('telebot/content/data_file')
+    regions = shelve_file['regions']
+    shelve_file.close()
     query = update.callback_query
     query.answer()
-    global county_value
     county_value = query.data
     print(county_value)
     data = functions.area_list(county=county_value, regions=regions)
@@ -132,6 +139,9 @@ def stop(update, context):
 
 
 def pdf_command(update, context):
+    shelve_file = shelve.open('telebot/content/data_file')
+    pdf_name = shelve_file['pdf_name']
+    shelve_file.close()
     update.message.reply_text('--fetching--')
     pdf_file = open(f'telebot/content/{pdf_name}', 'rb')
     chat_id = update.effective_chat.id
@@ -143,6 +153,9 @@ def unknown(update, context):
 
 
 def main():
+    thread_obj = threading.Thread(target=hellos)
+    thread_obj.start()
+
     updater = Updater(TOKEN, use_context=True)
     disp = updater.dispatcher
 
