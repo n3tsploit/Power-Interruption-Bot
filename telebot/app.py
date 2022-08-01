@@ -9,24 +9,24 @@ import os
 from pathlib import Path
 import shelve, threading
 
-
-def hellos():
-    schedule.every(3).seconds.do(functions.lol)
-    while True:
-        schedule.run_pending()
-        time.sleep(1)
-
-
-load_dotenv(Path("./telebot/.env"))
-TOKEN = os.getenv('TOKEN')
+# load_dotenv(Path("./telebot/.env"))
+# TOKEN = os.getenv('TOKEN')
+TOKEN = os.environ.get('TOKEN')
 PORT = int(os.environ.get('PORT', 88))
 
-print('Bot is starting')
+print('Bot is starting...')
 
 County, Area, Place = range(3)
 global county_value
 global area_value
 global regions
+
+
+def update_schedule():
+    schedule.every().minute.do(functions.check_updates)
+    while True:
+        schedule.run_pending()
+        time.sleep(1)
 
 
 def start_command(update,context):
@@ -149,11 +149,11 @@ def pdf_command(update, context):
 
 
 def unknown(update, context):
-    update.message.reply_text('Sorry I cannot understand the text!🥲')
+    update.message.reply_text('Sorry I cannot understand the text!🥲.Click /stop  to refresh.')
 
 
 def main():
-    thread_obj = threading.Thread(target=hellos)
+    thread_obj = threading.Thread(target=update_schedule)
     thread_obj.start()
 
     updater = Updater(TOKEN, use_context=True)
@@ -175,10 +175,10 @@ def main():
 
     disp.add_handler(MessageHandler(Filters.text, unknown))
 
-    # updater.start_webhook(listen="0.0.0.0",
-    #                       port=int(PORT),
-    #                       url_path=TOKEN,
-    #                       webhook_url='https://powerinterruption.herokuapp.com/' + TOKEN)
-    updater.start_polling()
+    updater.start_webhook(listen="0.0.0.0",
+                          port=int(PORT),
+                          url_path=TOKEN,
+                          webhook_url='https://powerinterruption.herokuapp.com/' + TOKEN)
+    # updater.start_polling()
 
     updater.idle()

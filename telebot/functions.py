@@ -42,12 +42,10 @@ def parse_content():
             if pattern_latest_date.search(str(os.path.basename(link.get('href')))):
                 url = link.get('href')
                 break
-        print(url)
         os.makedirs('telebot/content/', exist_ok=True)
         res = requests.get(url)
         res.raise_for_status()
         p = Path('telebot/content/')
-        print(list(p.glob('*.pdf')))
         pdf_name = str(os.path.basename(url))
         if len(list(p.glob('*.pdf'))) > 0:
             os.remove(list(p.glob('*.pdf'))[0])
@@ -153,6 +151,7 @@ def place_list(county, area, regions):
 
 
 def check_updates():
+    print('checking')
     pdf_name = parse_content()
     time.sleep(10)
     extract_pdf(pdf_name)
@@ -162,6 +161,3 @@ def check_updates():
     save_data_to_shelve()
 
     print(f'Checked for updates on {datetime.today().strftime("%Y/%m/%d %H:%M:%S")}')
-
-def lol():
-    print('med')
