@@ -22,7 +22,7 @@ global regions
 
 
 def update_schedule():
-    schedule.every().tuesday.at("14:40").do(functions.check_updates)
+    schedule.every().minutes(2).do(functions.check_updates)
     while True:
         schedule.run_pending()
         time.sleep(1)

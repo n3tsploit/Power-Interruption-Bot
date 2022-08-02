@@ -46,7 +46,7 @@ def parse_content():
         res = requests.get(url)
         res.raise_for_status()
         p = Path('telebot/content/')
-        print(p.glob('*'))
+        print(list(p.glob('*')))
         pdf_name = str(os.path.basename(url))
         if len(list(p.glob('*.pdf'))) > 0:
             os.remove(list(p.glob('*.pdf'))[0])
