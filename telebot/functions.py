@@ -12,6 +12,7 @@ import textract
 
 
 def parse_content():
+    os.makedirs('telebot/content/', exist_ok=True)
     res = requests.get('https://kplc.co.ke/category/view/50/planned-power-interruptions')
     res.raise_for_status()
 
@@ -42,7 +43,6 @@ def parse_content():
             if pattern_latest_date.search(str(os.path.basename(link.get('href')))):
                 url = link.get('href')
                 break
-        os.makedirs('telebot/content/', exist_ok=True)
         res = requests.get(url)
         res.raise_for_status()
         p = Path('telebot/content/')

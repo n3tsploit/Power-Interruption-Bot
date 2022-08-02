@@ -13,7 +13,6 @@ import shelve, threading
 # TOKEN = os.getenv('TOKEN')
 TOKEN = os.environ.get('TOKEN')
 PORT = int(os.environ.get('PORT', 88))
-
 print('Bot is starting...')
 
 County, Area, Place = range(3)
@@ -23,7 +22,7 @@ global regions
 
 
 def update_schedule():
-    schedule.every().tuesday.at("14:00").do(functions.check_updates)
+    schedule.every().tuesday.at("10:06").do(functions.check_updates)
     while True:
         schedule.run_pending()
         time.sleep(1)
