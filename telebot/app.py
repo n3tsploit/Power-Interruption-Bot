@@ -9,9 +9,9 @@ import os
 from pathlib import Path
 import shelve, threading
 
-# load_dotenv(Path("./telebot/.env"))
-# TOKEN = os.getenv('TOKEN')
-TOKEN = os.environ.get('TOKEN')
+load_dotenv(Path("./telebot/.env"))
+TOKEN = os.getenv('TOKEN')
+# TOKEN = os.environ.get('TOKEN')
 PORT = int(os.environ.get('PORT', 88))
 print('Bot is starting...')
 
@@ -22,7 +22,7 @@ global regions
 
 
 def update_schedule():
-    schedule.every().tuesday.at('19:36').do(functions.check_updates)
+    schedule.every(1).minutes.do(functions.check_updates)
 
     while True:
         schedule.run_pending()
@@ -174,10 +174,10 @@ def main():
 
     disp.add_handler(MessageHandler(Filters.text, unknown))
 
-    updater.start_webhook(listen="0.0.0.0",
-                          port=int(PORT),
-                          url_path=TOKEN,
-                          webhook_url='https://powerinterruption.herokuapp.com/' + TOKEN)
-    # updater.start_polling()
+    # updater.start_webhook(listen="0.0.0.0",
+    #                       port=int(PORT),
+    #                       url_path=TOKEN,
+    #                       webhook_url='https://powerinterruption.herokuapp.com/' + TOKEN)
+    updater.start_polling()
 
     updater.idle()
