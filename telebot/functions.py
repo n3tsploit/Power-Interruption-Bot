@@ -11,6 +11,7 @@ import requests
 import textract
 
 
+# This function checks the kplc website for the latest pdf on planned power interruptions and downloads it.
 def parse_content():
     os.makedirs('telebot/content/', exist_ok=True)
     res = requests.get('https://kplc.co.ke/category/view/50/planned-power-interruptions')
@@ -59,6 +60,7 @@ def parse_content():
         return pdf_name
 
 
+# This function extracts content from the pdf and saves it to a text file
 def extract_pdf(pdf_name):
     os.makedirs('telebot/content', exist_ok=True)
     textract_text = textract.process(f'telebot/content/{pdf_name}')
@@ -67,6 +69,7 @@ def extract_pdf(pdf_name):
         f.write(textract_str_text.strip('\n'))
 
 
+# This function removes irrelevant data from the text file created above and saves it to another text file
 def clean_extracted_data():
     pattern1_a = re.compile(r"Interruption of", re.IGNORECASE)
     pattern1_b = re.compile(r"etc\.\)", re.IGNORECASE)
@@ -87,6 +90,7 @@ def clean_extracted_data():
                 flag = True
 
 
+# Reads data from the text file created above and forms a nested dictionary of it and stores it in a shelve binary.
 def save_data_to_shelve():
     regions = {}
     region_regex = re.compile(r"region", re.IGNORECASE)
@@ -125,6 +129,7 @@ def save_data_to_shelve():
     f.close()
 
 
+# If a county has power interruptions planned, it returns areas in the specified county that will be affected.
 def area_list(county, regions):
     for region in regions.keys():
         if county.strip().upper() in regions[region].keys():
@@ -140,6 +145,7 @@ def area_list(county, regions):
     return None
 
 
+# returns places in the specific area passed that will be affected by the power interruption.
 def place_list(county, area, regions):
     county = county.strip().upper()
     for region in regions.keys():
@@ -152,6 +158,7 @@ def place_list(county, area, regions):
             return place_outage, time_outage
 
 
+# this funtion is run periodically -- refer to the app.py file
 def check_updates():
     print('checking')
     pdf_name = parse_content()

@@ -11,7 +11,10 @@ import shelve, threading
 
 load_dotenv(Path("./telebot/.env"))
 TOKEN = os.getenv('TOKEN')
+
+# To be used during deployemnt
 # TOKEN = os.environ.get('TOKEN')
+
 PORT = int(os.environ.get('PORT', 88))
 print('Bot is starting...')
 
@@ -21,23 +24,27 @@ global area_value
 global regions
 
 
+# schedules the check_updates funtion in funtions.py  to be run periodically
 def update_schedule():
-    schedule.every(1).minutes.do(functions.check_updates)
-
+    schedule.every().tuesday.at('19:00').do(functions.check_updates)
     while True:
         schedule.run_pending()
         time.sleep(1)
 
 
-def start_command(update,context):
+# This function is used in the python telegram bot to handle conversions
+def start_command(update, context):
     update.message.reply_text(f'Greetings {update.message.from_user.first_name}\U0001F601\n\nThis is an unofficial bot '
-                              f'which shows you Planned Power Interruptions in 🇰🇪.\n\nCommands are as follows:-'
+                              f'which shows you Planned Power Interruptions in 🇰🇪.\n\nPS:Built for educational '
+                              f'purposes and it might contain outdated/erroneous information.\n\nCommands are as '
+                              f'follows:- '
                               f'\n\U0001F4A1/check - To check the areas Planned for '
                               f'Interruptions.\n\U0001F4A1/pdf - To download a pdf of areas listed for Planned '
                               f'Interruptions.\n\U0001F4A1/info - To get information about the bot.'
                               f'\n\U0001F4A1/stop - To exit the conversion.')
 
 
+# This function is used in the python telegram bot to handle conversions
 def check_command(update, context):
     inline_keyboard = [[InlineKeyboardButton(text="Baringo", callback_data="Baringo"),
                         InlineKeyboardButton(text="Bomet", callback_data="Bomet"),
@@ -93,6 +100,7 @@ def check_command(update, context):
     return Area
 
 
+# This function is used in the python telegram bot to handle conversions
 def area(update, context):
     global county_value
     global regions
@@ -118,25 +126,28 @@ def area(update, context):
     return Place
 
 
+# This function is used in the python telegram bot to handle conversions
 def place(update, context):
     query = update.callback_query
     query.answer()
     place_value, time_value = functions.place_list(area=query.data, county=county_value, regions=regions)
     place_value = '\n▪️'.join(place_value)
-    place_value = '<b>📅'+time_value + '\n' + '-' * 49 + '\n' + 'Specific places to be affected are:</b>\n▪️' + place_value
+    place_value = '<b>📅' + time_value + '\n' + '-' * 49 + '\n' + 'Specific places to be affected are:</b>\n▪️' + place_value
     query.edit_message_text('--fetching--')
-    query.edit_message_text(place_value,parse_mode=telegram.ParseMode.HTML)
+    query.edit_message_text(place_value, parse_mode=telegram.ParseMode.HTML)
 
     context.bot.sendMessage(text='Bye👋', chat_id=update.effective_chat.id)
     return ConversationHandler.END
 
 
+# This function is used in the python telegram bot to handle conversions
 def stop(update, context):
     update.message.reply_text('Bye..see you later👋')
 
     return ConversationHandler.END
 
 
+# This function is used in the python telegram bot to handle conversions
 def pdf_command(update, context):
     shelve_file = shelve.open('telebot/content/data_file')
     pdf_name = shelve_file['pdf_name']
@@ -147,14 +158,17 @@ def pdf_command(update, context):
     return context.bot.send_document(chat_id, pdf_file)
 
 
+# This function is used in the python telegram bot to handle conversions
 def unknown(update, context):
     update.message.reply_text('Sorry I cannot understand the text!🥲.')
 
 
 def main():
+    # This thread runs the schulder which checks for updates in the kplc website
     thread_obj = threading.Thread(target=update_schedule)
     thread_obj.start()
 
+    # Code from here onwards is used to run the python telegram bot
     updater = Updater(TOKEN, use_context=True)
     disp = updater.dispatcher
 
@@ -174,10 +188,12 @@ def main():
 
     disp.add_handler(MessageHandler(Filters.text, unknown))
 
+    updater.start_polling()
+
+    # To be used during deployemnt
     # updater.start_webhook(listen="0.0.0.0",
     #                       port=int(PORT),
     #                       url_path=TOKEN,
     #                       webhook_url='https://powerinterruption.herokuapp.com/' + TOKEN)
-    updater.start_polling()
 
     updater.idle()
