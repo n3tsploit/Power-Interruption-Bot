@@ -20,6 +20,11 @@ Fine details of how everything works is in the code.
 ---
 ## How To Install Locally
 
--
+- Create a folder to store the code
+- At the terminal clone the repo `git clone https://github.com/n3tsploit/PowerOutage-Bot.git` or download the zip file of the code.
+- inside the telebot folder create a .env file containing the API token of the telegram bot gotten from Bot father.
+- start the bot by running the run.py file.
+- In app.py file line 29, you can change the frequency in which the bot checks for updates in the kplc website.
+- 
 
 
