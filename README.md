@@ -23,5 +23,7 @@ The bot parses the KPLC website once per week and downloads the latest pdf conta
 ## How To Use The Bot
 You can get a working prototype of the bot here https://t.me/planned_power_outage_bot .
 
+*PS:Built for educational purposes, and it might contain outdated/erroneous information.*
+
 
 
