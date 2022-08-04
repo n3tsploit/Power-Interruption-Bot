@@ -15,9 +15,6 @@ Fine details of how everything works is in the code.
 - [Boutiful Soup](https://pypi.org/project/beautifulsoup4/) --> parses the kplc website and doenloads the latest pdf.
 
 ---
-## How To Use The Bot
-
----
 ## How To Install Locally
 
 - Create a folder to store the code
@@ -25,6 +22,8 @@ Fine details of how everything works is in the code.
 - inside the telebot folder create a .env file containing the API token of the telegram bot gotten from Bot father.
 - start the bot by running the run.py file.
 - In app.py file line 29, you can change the frequency in which the bot checks for updates in the kplc website.
-- 
+
+---
+## How To Use The Bot
 
 
