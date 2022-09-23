@@ -28,7 +28,7 @@ You can get a working prototype of the bot here https://t.me/planned_power_outag
 
 ## Demo
 
-<iframe width="560" height="315" src="https://www.loom.com/share/866e866f1f1d41019492f75e752f8651" frameborder="0" allowfullscreen></iframe></iframe>
+<iframe width="560" height="315" src="https://www.loom.com/share/866e866f1f1d41019492f75e752f8651" frameborder="0" allowfullscreen></iframe>
 
 ## Features to add
 - [ ] Add an alert feature in which users will be notified if there is power interruption schduled in their county.
