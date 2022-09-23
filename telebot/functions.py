@@ -1,11 +1,11 @@
 import codecs
+import json
 import os
 import re
-import shelve
 import time
 from datetime import datetime
 from pathlib import Path
-
+import redis
 import bs4
 import requests
 import textract
@@ -53,10 +53,8 @@ def parse_content():
             os.remove(list(p.glob('*.pdf'))[0])
         with open('telebot/content/' + pdf_name, 'wb') as r:
             r.write(res.content)
-        f = shelve.open('telebot/content/data_file')
-        f['pdf_name'] = pdf_name
-        f.close()
-
+        conn = redis.from_url(os.environ.get("REDIS_URL"))
+        conn.set('pdf_name', pdf_name)
         return pdf_name
 
 
@@ -96,6 +94,7 @@ def save_data_to_shelve():
     region_regex = re.compile(r"region", re.IGNORECASE)
     area_regex = re.compile(r"area:", re.IGNORECASE)
     county_regex = re.compile(r"county", re.IGNORECASE)
+    remove_regex = re.compile(r"sub-county", re.IGNORECASE)
     previous_line = ''
     with open('telebot/content/cleaned_data.txt', 'r') as r:
         for line in r.readlines():
@@ -103,7 +102,7 @@ def save_data_to_shelve():
                 region_name = " ".join(line.split()[:-1])
                 county_name = ''
                 continue
-            if county_regex.search(line) and not 'offices' in line.casefold():
+            if county_regex.search(line) and not 'offices' in line.casefold() and not remove_regex.search(line):
                 county_name = line.casefold().replace('parts of', '')
                 county_name = ' '.join(county_name.split()[:-1]).upper()
                 continue
@@ -124,9 +123,9 @@ def save_data_to_shelve():
             if regions[region_name][county_name][area_name]['when'] == '':
                 regions[region_name][county_name][area_name]['when'] = ''.join(when).lower()
             regions[region_name][county_name][area_name]['where'] += line.strip().lower()
-    f = shelve.open('telebot/content/data_file')
-    f['regions'] = regions
-    f.close()
+    conn = redis.from_url(os.environ.get("REDIS_URL"))
+    regions_json = json.dumps(regions)
+    conn.set('regions', regions_json)
 
 
 # If a county has power interruptions planned, it returns areas in the specified county that will be affected.
@@ -157,16 +156,3 @@ def place_list(county, area, regions):
                             ''.join(regions[region][county][area]['where']).split(',')]
             return place_outage, time_outage
 
-
-# this funtion is run periodically -- refer to the app.py file
-def check_updates():
-    print('checking')
-    pdf_name = parse_content()
-    time.sleep(10)
-    extract_pdf(pdf_name)
-    time.sleep(3)
-    clean_extracted_data()
-    time.sleep(3)
-    save_data_to_shelve()
-
-    print(f'Checked for updates on {datetime.today().strftime("%Y/%m/%d %H:%M:%S")}')
