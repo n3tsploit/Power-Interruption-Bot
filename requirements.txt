@@ -3,7 +3,7 @@ argcomplete==1.10.3
 async-timeout==4.0.2
 beautifulsoup4==4.8.2
 cachetools==4.2.2
-certifi==2022.6.15
+certifi==2022.12.07
 chardet==3.0.4
 charset-normalizer==2.1.0
 compressed-rtf==1.0.6
